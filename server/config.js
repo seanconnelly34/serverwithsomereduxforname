@@ -4,7 +4,7 @@
 //   secure: false,
 //   port: 25,
 //   auth: {
-//     user: seanconnelly30@gmail.com',
+//     user: ',
 //     pass: process.env.GMAIL_PASSWORD,
 //   },
 //   tls: {
