@@ -8,7 +8,9 @@ import Patient from "./components/Patient";
 import Appendix from "./components/Appendix";
 import SignatureCanvas from "react-signature-canvas";
 import { makeStyles } from "@material-ui/core/styles";
-
+import { connect } from "react-redux";
+import { ReduxState } from "../../utils/ReduxState";
+import { setName } from "../../redux/actions";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -27,9 +29,12 @@ const Consent = (props) => {
   const classes = useStyles();
   const [trimmedSignature, setTrimmedSignature] = useState({});
   const [result, setResult] = useState(null);
+  // const [reduxCommonState, setReduxCommonState] = useState({ ReduxState });
 
+  const { setName } = props;
   let sigPad = {};
-
+  //import from redux state
+  const { name } = props;
   const clear = () => {
     sigPad.clear();
     setTrimmedSignature({});
@@ -38,6 +43,16 @@ const Consent = (props) => {
   const trim = () => {
     setTrimmedSignature(sigPad.getTrimmedCanvas().toDataURL("image/png"));
   };
+
+  // const reduxOnChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setReduxCommonState({
+  //     ...reduxCommonState,
+  //     [name]: value,
+  //   });
+  //   console.log("common state redux", reduxCommonState);
+  //   setName(reduxCommonState);
+  // };
 
   const onInputChange = (event) => {
     const { name, value } = event.target;
@@ -59,10 +74,10 @@ const Consent = (props) => {
   const sendEmail = (event) => {
     event.preventDefault();
 
-    if (state.name.length > 2 && state.name.length < 40) {
+    if (name.length > 2 && name.length < 40) {
       setDone(true);
       axios
-        .post("/consent", { ...state, trimmedSignature })
+        .post("/consent", { ...state, name, trimmedSignature })
         .then((response) => {
           setResult(response.data);
           setState(State);
@@ -115,11 +130,6 @@ const Consent = (props) => {
                 onCheck={onCheck}
                 onInputChange={onInputChange}
               />
-              {/* <Physicians
-                onInputChange={onInputChange}
-                onCheck={onCheck}
-                state={state}
-              /> */}
 
               <Grid item xs={12}>
                 <h3>
@@ -236,4 +246,8 @@ const Consent = (props) => {
   );
 };
 
-export default Consent;
+const mapDispatchToProps = (dispatch) => ({
+  setName: (e) => dispatch(setName(e)),
+});
+
+export default connect(null, mapDispatchToProps)(Consent);

@@ -11,6 +11,9 @@ import Section3 from "./components/Section3";
 import SignatureCanvas from "react-signature-canvas";
 import { makeStyles } from "@material-ui/core/styles";
 import "./styles.css";
+import { connect } from "react-redux";
+import { ReduxState } from "../../utils/ReduxState";
+import { setName } from "../../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +33,7 @@ const Covid = (props) => {
   const classes = useStyles();
   const [trimmedSignature, setTrimmedSignature] = useState({});
   const [result, setResult] = useState(null);
-
+  const [reduxCommonState, setReduxCommonState] = useState({ ReduxState });
   let sigPad = {};
 
   const clear = () => {
@@ -49,6 +52,16 @@ const Covid = (props) => {
       [name]: value,
     });
     console.log("name: ", name, "value: ", value);
+  };
+
+  const reduxOnChange = (event) => {
+    const { name, value } = event.target;
+    setReduxCommonState({
+      ...reduxCommonState,
+      [name]: value,
+    });
+    console.log("common state redux", reduxCommonState);
+    setName(reduxCommonState);
   };
 
   const onCheck = (e) => {
@@ -243,4 +256,8 @@ const Covid = (props) => {
   );
 };
 
-export default Covid;
+const mapStateToProps = (state) => ({
+  name: state.commonFields.name,
+});
+
+export default connect(mapStateToProps)(Covid);

@@ -5,7 +5,15 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import axios from "axios";
 import { Provider } from "react-redux";
-import store from "./redux/store";
+// import store from "./redux/store";
+import { createStore } from "redux";
+import rootReducer from "./redux/reducer";
+import { configureStore } from "@reduxjs/toolkit";
+
+const store = configureStore({ reducer: rootReducer });
+
+console.log(store.getState());
+
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_ADDRESS;
 
 ReactDOM.render(

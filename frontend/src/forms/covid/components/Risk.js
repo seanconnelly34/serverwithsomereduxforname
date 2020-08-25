@@ -59,7 +59,7 @@ const Risk = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  name: state.name,
+  name: state.commonFields.name,
 });
 const mapDispatchToProps = (dispatch) => ({
   setName: (e) => dispatch(setName(e)),

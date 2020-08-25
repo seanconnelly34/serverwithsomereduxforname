@@ -1,16 +1,4 @@
 import { combineReducers } from "redux";
+import commonFields from "./commonFields";
 
-const initialState = {
-  name: "",
-};
-
-function addReducer(state = initialState, action) {
-  switch (action.type) {
-    case "NAME":
-      return { ...state, name: action.text };
-    default:
-      return state;
-  }
-}
-
-export default addReducer;
+export default combineReducers({ commonFields });

@@ -3,10 +3,10 @@ import { Grid } from "@material-ui/core";
 import { TextValidator } from "react-material-ui-form-validator";
 import NewDate from "../../../utils/NewDate";
 import { connect } from "react-redux";
-import { setName } from "../../../redux/actions";
+import { setName, setAddress } from "../../../redux/actions";
 const Patient = (props) => {
   const fontSize = 19;
-  const { name, setName } = props;
+  const { name, setName, setAddress, address } = props;
   return (
     <>
       <Grid item xs={12} sm={12}>
@@ -58,9 +58,9 @@ const Patient = (props) => {
         <TextValidator
           fullWidth
           label="Address"
-          onChange={props.onInputChange}
+          onChange={(e) => setAddress(e)}
           name="address"
-          value={props.state.address}
+          value={address}
           validators={["minStringLength:2", "maxStringLength:40"]}
           errorMessages={["This field is required", "Name is not valid"]}
           inputProps={{ style: { fontSize: fontSize } }}
@@ -123,11 +123,13 @@ const Patient = (props) => {
   );
 };
 const mapStateToProps = (state) => ({
-  name: state.name,
+  name: state.commonFields.name,
+  address: state.commonFields.address,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setName: (e) => dispatch(setName(e)),
+  setAddress: (e) => dispatch(setAddress(e)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Patient);

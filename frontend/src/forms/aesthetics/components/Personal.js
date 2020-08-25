@@ -2,8 +2,11 @@ import React from "react";
 import { Grid } from "@material-ui/core";
 import { TextValidator } from "react-material-ui-form-validator";
 import NewDate from "../../../utils/NewDate";
+import { setName, setAddress } from "../../../redux/actions";
+import { connect } from "react-redux";
 const PersonalInfo = (props) => {
   const fontSize = 19;
+  const { name, setName, address, setAddress } = props;
   return (
     <>
       <Grid item xs={12} sm={12}>
@@ -28,9 +31,9 @@ const PersonalInfo = (props) => {
         <TextValidator
           fullWidth
           label="Name"
-          onChange={props.onInputChange}
+          onChange={(e) => setName(e)}
           name="name"
-          value={props.state.name}
+          value={name}
           validators={["minStringLength:2", "maxStringLength:25"]}
           errorMessages={["This field is required", "Name is not valid"]}
           inputProps={{ style: { fontSize: fontSize } }}
@@ -59,9 +62,9 @@ const PersonalInfo = (props) => {
         <TextValidator
           fullWidth
           label="Street Address"
-          onChange={props.onInputChange}
+          onChange={(e) => setAddress(e)}
           name="streetaddress"
-          value={props.state.streetaddress}
+          value={address}
           validators={["minStringLength:5", "maxStringLength:30"]}
           errorMessages={["Enter your address", "Too long"]}
           inputProps={{ style: { fontSize: fontSize } }}
@@ -127,4 +130,14 @@ const PersonalInfo = (props) => {
   );
 };
 
-export default PersonalInfo;
+const mapStateToProps = (state) => ({
+  name: state.commonFields.name,
+  address: state.commonFields.address,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setName: (e) => dispatch(setName(e)),
+  setAddress: (e) => dispatch(setAddress(e)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PersonalInfo);

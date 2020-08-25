@@ -1,7 +1,6 @@
 import NewDate from "../../utils/NewDate";
 export default {
   date: NewDate(),
-  name: "",
   address: "",
   homePhone: "",
   mobilePhone: "",
